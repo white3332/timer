@@ -1,0 +1,104 @@
+.main-grid-rows{
+    display: grid;
+    grid-template-rows:200px 100px 150px;
+}
+.main-grid-columns {
+    display: grid;
+    grid-template-columns: 25% 22.5% 5% 22.5% 25%;
+    padding: 5%;
+}
+.main-head-page{
+    height: 100%;
+    width: 100%;
+    font-size: 400%;
+    text-align: center;
+    background-color: #A9F5BCE0;
+    margin: 0%;
+}
+.main-button-size{
+    height: 100%;
+    width: 100%;
+    padding: 0%;
+    margin: 0%;
+}
+.main-content-page{
+    height: 100%;
+    width: 100%;
+    background-color: #F2F2F2;
+}
+
+
+.sub-edit-page{
+    display: grid;
+    grid-template-rows: 20% 20% 45% 15%;
+    min-height: 500px;
+    height: 100vh;
+    min-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.sub-edit-time{
+    display: grid;
+    grid-template-rows: 25% 25% 25% 25%;
+}
+.sub-edit-timelist{
+    display: grid;
+    grid-template-rows: 25% 25% 25% 25%;
+}
+.sub-edit-back{
+    display: grid;
+    grid-template-rows: 25% 25% 25% 25%;
+}
+
+
+.grid-center{
+    place-items: center;
+}
+#in-hour, #in-min, #in-sec {
+    width: 50px;
+    height: 30px;
+    
+}
+
+.row2{
+    display: grid;
+    grid-template-rows: 50% 50%;
+
+}
+.col2{
+    display: grid;
+    grid-template-columns: 50% 50%;
+
+}
+.row3{
+    display: grid;
+    grid-template-rows: 33% 33% 33%;
+
+}
+.col3{
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+}
+.row4{
+    display: grid;
+    grid-template-rows: 25% 25% 25% 25%;
+}
+.col4{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+
+}
+
+
+/* 추가적인 스타일링은 여기에 작성할 수 있습니다. */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+}
+img {
+    width: 30px; /* 이미지 크기를 조절하세요. */
+    height: 30px;
+    margin-right: 2px;
+    cursor: pointer;
+}
