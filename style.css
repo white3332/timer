@@ -28,6 +28,7 @@
 }
 
 
+
 .sub-edit-page{
     display: grid;
     grid-template-rows: 20% 20% 45% 15%;
@@ -51,29 +52,28 @@
 }
 
 
+
 .grid-center{
     place-items: center;
 }
 #in-hour, #in-min, #in-sec {
     width: 50px;
     height: 30px;
-    
 }
+
+
 
 .row2{
     display: grid;
     grid-template-rows: 50% 50%;
-
 }
 .col2{
     display: grid;
     grid-template-columns: 50% 50%;
-
 }
 .row3{
     display: grid;
     grid-template-rows: 33% 33% 33%;
-
 }
 .col3{
     display: grid;
@@ -86,8 +86,8 @@
 .col4{
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
-
 }
+
 
 
 /* 추가적인 스타일링은 여기에 작성할 수 있습니다. */
