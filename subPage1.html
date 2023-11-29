@@ -10,13 +10,13 @@
 <body>
     <div class="sub-edit-page">
         <div>
-            <label>타이머 수정</label>
+            <p>타이머 수정</p>
         </div>
         <div class="row2">
             <div class="col3 and grid-center">
-                <label>시</label>
-                <label>분</label>
-                <label>초</label>
+                <p>시</p>
+                <p>분</p>
+                <p>초</p>
             </div>
             <div class="col3 and grid-center">
                 <div class="col3 and grid-center">
@@ -48,28 +48,30 @@
                 </div>
             </div>
         </div>
-        <div class="col2">
+        <div class="col2 and grid-center">
             <div style="overflow-x:hidden; background-color: #f0f0f0;">
                 <!-- 시간 선택을 위한 라디오 버튼 -->
                 <form id="timeForm">
                     <!-- JavaScript에서 동적으로 생성됩니다. -->
                 </form>
             </div>
-            <div class = "row4">
-                <input id="in-id" placeholder="여기에 ID를 입력하세요" >
+            <div class = "row4 and grid-center">
+                <label>
+                    <input id="in-id" placeholder="여기에 ID를 입력하세요" >
+                </label>
                 <button>저장하기</button>
                 <button>불러오기</button>
-                <label>설명</label>
+                <p>설명</p>
             </div>
         </div>
-        <div class="col2">
-            <div class="col2">
-                <button onclick="addTime()">추가</button>
-                <button onclick="removeTime()">삭제</button>
+        <div class="col2 and grid-center">
+            <div class="col2 and grid-center">
+                <button class="button" onclick="addTime()">추가</button>
+                <button class="button" onclick="removeTime()">삭제</button>
             </div>
-            <div class="col2">
-                <button>닫기</button>
-                <button>타이머시작</button>
+            <div class="col2 and grid-center">
+                <button class="button">닫기</button>
+                <button class="button">타이머시작</button>
             </div>
         </div>
     </div>

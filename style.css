@@ -1,10 +1,13 @@
 .main-grid-rows{
     display: grid;
-    grid-template-rows:200px 100px 150px;
+    height: 600px;
+    width: 500px;
+    grid-template-rows:40% 20% 30%;
 }
 .main-grid-columns {
     display: grid;
-    grid-template-columns: 25% 22.5% 5% 22.5% 25%;
+    align-content: space-evenly;
+    grid-template-columns: 10% 16% 16% 16% 16% 16% 10%;
     padding: 5%;
 }
 .main-head-page{
@@ -29,63 +32,81 @@
 
 
 
-.sub-edit-page{
+/* 모달팝업을 감싸고 있는 최상위 부모*/
+#modalWrap {
+    display: none;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 100px;
+    top: 100px;
+    height: 422px;
+    width: 522px;
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    border: 2px solid #777;
+}
+/* 모달 팝업창*/
+#modalBody {
+    padding: 10px 10px;
+    margin: 0 auto;
+}
+
+/* 화면 전체를 덮는 배경 */
+.sub-edit-page {
     display: grid;
-    grid-template-rows: 20% 20% 45% 15%;
-    min-height: 500px;
-    height: 100vh;
-    min-width: 400px;
-    padding: 10px;
+    position: fixed;
+    grid-template-rows: 10% 20% 45% 15%;
+    height: 400px;
+    width: 500px;
     border: 1px solid #ccc;
-}
-.sub-edit-time{
-    display: grid;
-    grid-template-rows: 25% 25% 25% 25%;
-}
-.sub-edit-timelist{
-    display: grid;
-    grid-template-rows: 25% 25% 25% 25%;
-}
-.sub-edit-back{
-    display: grid;
-    grid-template-rows: 25% 25% 25% 25%;
+    background-color:honeydew;
+    align-content: stretch;
+    justify-content: space-between;
+    align-items: center;
+    justify-items: center;
 }
 
-
-
+/*****뿌리는 소스****/
 .grid-center{
     place-items: center;
 }
-#in-hour, #in-min, #in-sec {
-    width: 50px;
-    height: 30px;
+.margin-sauce{
+    margin-top: 5px;
+    margin-left: 5px;
 }
-
-
+.bold-sauce{
+    font-weight: bold;
+}
+.gap-sauce{
+    gap: 10px;
+}
+/*한줄로 표시되는 텍스트 소스*/
+.one-line{
+    white-space: nowrap;
+}
 
 .row2{
     display: grid;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: 45% 45%;
 }
 .col2{
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 45% 45%;
 }
 .row3{
     display: grid;
-    grid-template-rows: 33% 33% 33%;
+    grid-template-rows: 30% 30% 30%;
 }
 .col3{
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 30% 30% 30%;
 }
 .row4{
     display: grid;
-    grid-template-rows: 25% 25% 25% 25%;
+    grid-template-rows: 22.5% 22.5% 22.5% 22.5%;
 }
 .col4{
     display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: 22.5% 22.5% 22.5% 22.5%;
 }
 
 
@@ -96,9 +117,61 @@
     align-items: center;
     margin-bottom: 2px;
 }
-img {
-    width: 30px; /* 이미지 크기를 조절하세요. */
-    height: 30px;
+/* 이미지 크기를 조절하세요. */
+.img {
+    width: 28px;
     margin-right: 2px;
+}
+/* 텍스트 양에 비례한 크기의 버튼 생성하기 */
+.button {
+    padding: 8px 20px; /* 상하 10px, 좌우 20px의 여백을 지정 */
+    margin-top: 2px;
+    margin-left: 2px;
+}
+
+
+/*id 입력해서 스타일 설정*/
+#closeBtn {
+    float:right;
+    font-weight: bold;
+    color: #777;
+    font-size:25px;
     cursor: pointer;
+}
+#subTitle {
+    height: 100%;
+    width: 100%;
+    font-size: 200%;
+    text-align: center;
+    background-color: aquamarine;
+}
+#in-hour, #in-min, #in-sec {
+    width: 22px;
+    height: 24px;
+}
+#angry{
+    justify-items: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-left: 5px;
+    gap: 20px;
+}
+#timeSet {
+    margin-top: 5px;
+    margin-left: 40px;
+    gap: 30px;
+}
+#timeForm {
+    justify-content: space-evenly;
+    overflow-y: scroll; /* 수직 스크롤바 표시 */
+    height: 150px;
+    width: 170px;
+}
+#in-id {
+    margin-top: 5px;
+    margin-left: -30px;
+}
+#loaddatagrid{
+    margin-top: 5px;
+    margin-left: 40px;
 }

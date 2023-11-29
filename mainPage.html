@@ -10,23 +10,21 @@
 <body>
     <div class="main-grid-rows">
         <div class="main-head-page">
-            <p>00:00:00</p>
+            <div id="timer">00:05:00</div>
         </div>
         <div class="main-grid-columns">
             <p></p>
-            <button type="button" class="main-button-size">타이머 수정</button>
             <p></p>
-            <button type="button" class="main-button-size">시작</button>
+            <button id="editButton" type="button" class="main-button-size" onclick="openModal()">타이머 수정</button>
+            <button id="startStopButton" type="button" class="main-button-size" onclick="startStopTimer()">이어서 시작</button>
+            <button id="restartButton" type="button" class="main-button-size" onclick="restart()">시작</button>
+            <p></p>
             <p></p>
         </div>
         <div class="main-head-page">
             <p> </p>
         </div>
     </div>
-
-
-
-
 
 </body>
 </html>
