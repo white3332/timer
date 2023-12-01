@@ -1,7 +1,7 @@
 .main-grid-rows{
     display: grid;
-    height: 600px;
-    width: 500px;
+    height: 800px;
+    width: 730px;
     grid-template-rows:40% 20% 30%;
 }
 .main-grid-columns {
@@ -20,9 +20,9 @@
 }
 .main-button-size{
     height: 100%;
-    width: 100%;
+    width: 110%;
     padding: 0%;
-    margin: 0%;
+    margin: 12%;
 }
 .main-content-page{
     height: 100%;
@@ -33,7 +33,7 @@
 
 
 /* 모달팝업을 감싸고 있는 최상위 부모*/
-#modalWrap {
+#modalWrap, #modalNotificationWrap {
     display: none;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -45,7 +45,7 @@
     border: 2px solid #777;
 }
 /* 모달 팝업창*/
-#modalBody {
+#modalBody, #modalNotificationBody{
     padding: 10px 10px;
     margin: 0 auto;
 }
@@ -128,6 +128,14 @@
     margin-top: 2px;
     margin-left: 2px;
 }
+.block {
+    display: inline-block;
+    padding: 18px 16px; /* 상하 10px, 좌우 20px의 여백을 지정 */
+    margin-top: 0px;
+    margin-left: -30px;
+    border: 4px solid #777;
+    background-color: #ccc;
+}
 
 
 /*id 입력해서 스타일 설정*/
@@ -143,7 +151,7 @@
     width: 100%;
     font-size: 200%;
     text-align: center;
-    background-color: aquamarine;
+    
 }
 #in-hour, #in-min, #in-sec {
     width: 22px;
