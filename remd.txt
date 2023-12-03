@@ -10,6 +10,11 @@ mytimer-white3332.메인.한국
 curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get install -y nodejs
 npm install express
+
+https://4sii.tistory.com/200
+https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/
+
+
 복붙가능
 sudo apt-get update
 sudo apt-get install open-vm-tools-desktop

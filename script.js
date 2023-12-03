@@ -288,19 +288,23 @@ function timeFormReboot() {
     }
 
 function fetchdata() {
-    const id = document.getElementById('in-id').innerText; // id
-    const dataArray = times;/* 배열 데이터 */
+    const db = client.db('db');
+    // 사용자가 입력한 id
+    const id = document.getElementById('in-id').innerText
+    // id의 times 배열 업데이트
+    times = db.collection('id').find({id})
+    // 시간을 표시할 요소와 체크박스 초기화
+    timeFormReboot()
+}
 
-    fetch('http://localhost:3000/saveData', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ id, dataArray }),
-    })
-    .then(response => response.json())
-    .then(data => {
-    console.log(data.message); // 서버로부터의 응답 확인
-    })
-    .catch(error => console.error('Error:', error));
+function savedata() {
+    const db = client.db('db');
+    // 사용자가 입력한 id
+    const id = document.getElementById('in-id').innerText
+    // 데이터베이스에 id와 times 배열 저장, 만약 겹치면 업데이트함
+    db.posts.updateOne( 
+        { id: id}, 
+        { times: times}, 
+        { upsert: true }
+      )
 }
