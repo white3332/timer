@@ -1,9 +1,12 @@
-const express = require('express');
-const app = express();
+const mongoose = require('mongoose');
+const MONGODB_URL = 'mongodb+srv://white3332:white3332@cluster0.yivknnw.mongodb.net/?retryWrites=true&w=majority';
 
-app.listen(8080, ()=>{
-	console.log('server on');
+mongoose.connect(MONGODB_URL, {useNewUrlParser: ture}, (err)=>{
+    if (err){
+        console.log(err);
+    }else {
+        console.log('connected to database succesfully');
+    }
 })
-app.get('/', (req, res)=>{
-    res.render('titlePage.html');
-})
+
+
