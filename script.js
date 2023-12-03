@@ -287,24 +287,35 @@ function timeFormReboot() {
         }
     }
 
-function fetchdata() {
-    const db = client.db('db');
-    // 사용자가 입력한 id
-    const id = document.getElementById('in-id').innerText
-    // id의 times 배열 업데이트
-    times = db.collection('id').find({id})
-    // 시간을 표시할 요소와 체크박스 초기화
-    timeFormReboot()
-}
 
-function savedata() {
-    const db = client.db('db');
-    // 사용자가 입력한 id
-    const id = document.getElementById('in-id').innerText
-    // 데이터베이스에 id와 times 배열 저장, 만약 겹치면 업데이트함
-    db.posts.updateOne( 
-        { id: id}, 
-        { times: times}, 
-        { upsert: true }
-      )
-}
+
+
+// Function to fetch data
+async function fetchData() {
+    const id = document.getElementById('in-id').value;
+  
+    // Assuming 'id' is a unique identifier in your collection
+    const result = await fetch(`/api/data?id=${id}`);
+    const data = await result.json();
+  
+    if (data) {
+      // Do something with the data, for example:
+      console.log('Found data:', data);
+    } else {
+      console.log('Data not found');
+    }
+  }
+
+// Function to save data
+async function saveData() {
+    const id = document.getElementById('in-id').value;
+  
+    const response = await fetch(`/api/saveData?id=${id}&times=${times}`, {
+      method: 'POST'
+    });
+  
+    const result = await response.json();
+  
+    console.log('Data saved:', result);
+  }
+  
