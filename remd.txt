@@ -24,3 +24,8 @@ white3332 계정
 비번 white3333
 root 계정
 비번 white3332
+
+
+node server 하고
+mysql 데이터베이스 열고
+html 실행할것

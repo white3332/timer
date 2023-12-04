@@ -7,9 +7,9 @@ const port = 3000;
 
 // MySQL 연결 설정
 const connection = mysql.createConnection({
-  host: 'white3332',
+  host: 'localhost',
   user: 'white3332',
-  password: 'white3332',
+  password: '123456',
   database: 'times',
 });
 
@@ -29,43 +29,62 @@ app.use((req, res, next) => {
   next();
 });
 
+// Parse application/json
+app.use(bodyParser.json());
+
+
 // ID로 검색하여 times 반환하는 API
 app.get('/getTimes/:id', (req, res) => {
   const userId = req.params.id;
 
-  const query = 'SELECT times FROM user_data WHERE user_id = ?';
+  const query = 'SELECT times FROM times WHERE id = ?';  // 테이블 이름 수정
 
-  connection.query(query, [userId], (err, results) => {
+  connection.query(query, userId, (err, results) => {
     if (err) {
-        console.error('Error executing query:', err);
-        return res.status(500).send('Internal Server Error');
+      console.error('Error executing query:', err);
+      return res.status(500).send('Internal Server Error');
     }
 
     if (results.length > 0) {
-        res.json(results[0].times);
+      const times = JSON.parse(results[0].times);  // JSON 문자열을 JavaScript 객체로 변환
+      res.json(times);
     } else {
-        // 존재하지 않는 아이디를 조회한 경우
-        res.status(404).send('입력하신 아이디가 존재하지 않습니다.');
+      // 존재하지 않는 아이디를 조회한 경우
+      res.status(404).send('입력하신 아이디가 존재하지 않습니다.');
     }
   });
 });
 
+
 // ID와 times를 받아서 데이터베이스에 저장하는 API
-app.post('/saveTimes', (req, res) => {
+app.post('/saveTimes', async (req, res) => {
   const { id, times } = req.body;
+  const placeholders = times.map(() => '?').join(', ');  // Generate placeholders for the update part
+  const query = `
+    INSERT INTO times (id, times) 
+    VALUES (?, ?) 
+    ON DUPLICATE KEY UPDATE times = VALUES(times)`;
+  const queryValues = [id, JSON.stringify(times), ...times];  // Include individual times for the update part
 
-  const query = 'INSERT INTO user_data (user_id, times) VALUES (?, ?) ON DUPLICATE KEY UPDATE times = ?';
+  try {
+    const results = await new Promise((resolve, reject) => {
+      connection.query(query, queryValues, (err, results) => {
+        if (err) reject(err);
+        else resolve(results);
+      });
+    });
 
-  connection.query(query, [id, JSON.stringify(times)], (err, results) => {
-      if (err) {
-          console.error('Error executing query:', err);
-          res.status(500).send('Internal Server Error');
-      } else {
-          res.send('Data saved successfully');
-      }
-  });
+    res.send('Data saved successfully');
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).send(`Error executing query: ${error.message}`);
+  }
 });
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+
+

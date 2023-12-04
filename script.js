@@ -159,7 +159,7 @@ function timeadjust(dir, timeinput) {
     // 값을 다시 입력 필드에 설정
     document.getElementById(timeinput).value = newValue;
 }
-// 시간을 저장할 배열
+// 시간을 저장할 배열 (default)
 // 예시 ['00:05:00', '00:05:00', '00:05:00']
 var times = ['00:00:30', '00:00:30'];
 // 누적시간을 저장할 배열
@@ -167,6 +167,19 @@ var times = ['00:00:30', '00:00:30'];
 // 예시 [300, 600, 900]
 var accumulateTimes = [30, 60];
 
+function updateAccumulateTimes(){
+    // 모든 시간을 누적한 값 생성
+    var totalSeconds = 0;
+    // 누적시간을 저장할 배열
+    accumulateTimes = [];
+    for (let i = 0; i < times.length; i++) {
+        // 시, 분, 초를 초로 변환하여 더함
+        let timeParts = times[i].split(":");
+        let timeInSeconds = parseInt(timeParts[0], 10) * 3600 + parseInt(timeParts[1], 10) * 60 + parseInt(timeParts[2], 10);
+        totalSeconds += timeInSeconds;
+        accumulateTimes.push(totalSeconds);
+    }
+}
 // 시간 단계를 추가함
 function addTime() {
     // HH:mm:ss 형식으로 변환
@@ -200,16 +213,7 @@ function addTime() {
     console.log(times)
 
     // 모든 시간을 누적한 값 생성
-    var totalSeconds = 0;
-    // 누적시간을 저장할 배열
-    accumulateTimes = [0];
-    for (let i = 0; i < times.length; i++) {
-        // 시, 분, 초를 초로 변환하여 더함
-        let timeParts = times[i].split(":");
-        let timeInSeconds = parseInt(timeParts[0], 10) * 3600 + parseInt(timeParts[1], 10) * 60 + parseInt(timeParts[2], 10);
-        totalSeconds += timeInSeconds;
-        accumulateTimes.push(totalSeconds);
-    }
+    updateAccumulateTimes()
 
     // 시간을 표시할 요소와 체크박스 초기화
     timeFormReboot()
@@ -228,16 +232,7 @@ function removeTime() {
     });
 
     // 모든 시간을 누적한 값 생성
-    var totalSeconds = 0;
-    // 누적시간을 저장할 배열
-    accumulateTimes = [0];
-    for (let i = 0; i < times.length; i++) {
-        // 시, 분, 초를 초로 변환하여 더함
-        let timeParts = times[i].split(":");
-        let timeInSeconds = parseInt(timeParts[0], 10) * 3600 + parseInt(timeParts[1], 10) * 60 + parseInt(timeParts[2], 10);
-        totalSeconds += timeInSeconds;
-        accumulateTimes.push(totalSeconds);
-    }
+    updateAccumulateTimes()
 
     // 시간을 표시할 요소와 체크박스 초기화
     timeFormReboot()
@@ -289,54 +284,59 @@ function timeFormReboot() {
 
 
 
-// ID로 검색하여 times 반환하는 함수
-function getTimes() {
-    const id = document.getElementById('in-id').value;
-    // 아이디를 입력하지 않은 경우
-    if (!id) {
-        return res.status(400).send('아이디를 입력하지 않았습니다.');
+async function getTimes() {
+    const inId = document.getElementById('in-id').value;
+    if (!inId) {
+        alert('아이디를 입력하지 않았습니다.');
     } else {
-        fetch(`http://localhost:3000/getTimes/${id}`)
-        .then(response => response.json())
-        .then(data => {
+        try {
+            const response = await fetch(`http://localhost:3000/getTimes/${inId}`);
+            const data = await response.json();
             console.log('Times:', data);
+            times = data;
+
             // 여기서 data를 사용하여 원하는 작업을 수행할 수 있습니다.
-        })
-        .catch(error => console.error('Error:', error));
-        // 시간을 표시할 요소와 체크박스 초기화
-        timeFormReboot()
+            
+            // 모든 시간을 누적한 값 생성
+            updateAccumulateTimes();
+            // 시간을 표시할 요소와 체크박스 초기화
+            timeFormReboot();
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
-    
 }
 
-// ID와 times를 저장하는 함수
-function saveTimes() {
-    const id = document.getElementById('in-id').value;
-    if (!id) {
-        return res.status(400).send('아이디를 입력하지 않았습니다.');
+async function saveTimes() {
+    const inId = document.getElementById('in-id').value;
+    if (!inId) {
+        alert('아이디를 입력하지 않았습니다.');
     } else {
-        fetch('http://localhost:3000/saveTimes', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            id: id,
-            times: times
-            })
-        })
-        .then(response => {
+        try {
+            const response = await fetch('http://localhost:3000/saveTimes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: inId,
+                    times: times
+                })
+            });
+
             if (response.ok) {
                 console.log('Data saved successfully');
+                // 모든 시간을 누적한 값 생성
+                updateAccumulateTimes();
+                // 시간을 표시할 요소와 체크박스 초기화
+                timeFormReboot();
             } else {
                 console.error('Failed to save data');
             }
-        })
-        .catch(error => console.error('Error:', error));
-        // 시간을 표시할 요소와 체크박스 초기화
-        timeFormReboot()
-
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
-    
 }
+
 
