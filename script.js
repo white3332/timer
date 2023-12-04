@@ -289,59 +289,54 @@ function timeFormReboot() {
 
 
 
-
-// Function to fetch data
-async function fetchData() {
+// ID로 검색하여 times 반환하는 함수
+function getTimes() {
     const id = document.getElementById('in-id').value;
-    const data = { key: id };
-  
-    try {
-      const response = await fetch('/getData', {
+    // 아이디를 입력하지 않은 경우
+    if (!id) {
+        return res.status(400).send('아이디를 입력하지 않았습니다.');
+    } else {
+        fetch(`http://localhost:3000/getTimes/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Times:', data);
+            // 여기서 data를 사용하여 원하는 작업을 수행할 수 있습니다.
+        })
+        .catch(error => console.error('Error:', error));
+        // 시간을 표시할 요소와 체크박스 초기화
+        timeFormReboot()
+    }
+    
+}
+
+// ID와 times를 저장하는 함수
+function saveTimes() {
+    const id = document.getElementById('in-id').value;
+    if (!id) {
+        return res.status(400).send('아이디를 입력하지 않았습니다.');
+    } else {
+        fetch('http://localhost:3000/saveTimes', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
-  
-      const result = await response.json();
-      console.log('Data inserted:', result);
-  
-      // 여기에서 받은 데이터(result)를 원하는 대로 활용할 수 있습니다.
-    } catch (error) {
-      console.error('Error inserting data:', error);
+        body: JSON.stringify({
+            id: id,
+            times: times
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('Data saved successfully');
+            } else {
+                console.error('Failed to save data');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+        // 시간을 표시할 요소와 체크박스 초기화
+        timeFormReboot()
+
     }
-  }
-  
+    
+}
 
-
-
-
-// Function to save data
-async function saveData() {
-    // 데이터 객체를 만듭니다. 이 데이터는 서버로 전송될 것입니다.
-    const id = document.getElementById('in-id').value;
-    // id와 times 배열을 저장
-    const data = { key: id, times: times }; // times 데이터를 객체에 추가
-
-    // AJAX 요청을 보냅니다.
-    fetch('/insertData', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-    .then(response => response.json())
-    .then(result => {
-      console.log('Data inserted:', result);
-    })
-    .catch(error => {
-      console.error('Error inserting data:', error);
-    });
-  }
-  

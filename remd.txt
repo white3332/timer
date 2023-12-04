@@ -19,4 +19,8 @@ https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/
 sudo apt-get update
 sudo apt-get install open-vm-tools-desktop
 
-
+우분투
+white3332 계정
+비번 white3333
+root 계정
+비번 white3332
