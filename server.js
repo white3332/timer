@@ -1,65 +1,80 @@
-// Express 서버 설정
 const express = require('express');
-const mongoose = require('mongoose');
+const { MongoClient } = require('mongodb');
 
 const app = express();
 const port = 3000;
+const username = encodeURIComponent("white3332");
+const password = encodeURIComponent("white3332");
+const cluster = "db.kgic98h.mongodb.net";
+const databaseName = "blog";
+const collectionName = "times";
 
-// MongoDB 연결 설정
+const uri = `mongodb+srv://${username}:${password}@${cluster}/${databaseName}?retryWrites=true&w=majority`;
 
-var MONGODB_URL = 'mongodb+srv://white3332:white3332@db.kgic98h.mongodb.net/?retryWrites=true&w=majority';
-var client = mongoose.connect(MONGODB_URL);
+// 미들웨어 설정
+app.use(express.json());
 
-// Connect to the MongoDB server
-client.connect(err => {
-  if (err) {
-    console.error('Failed to connect to the database', err);
-    return;
-  }
 
-  // Database instance
-  const db = client.db('blog');
-
-// API 핸들러 구현 - 데이터 저장
-app.post('/api/data', async (req, res) => {
-  const id = req.body.id; // 클라이언트에서 전달한 id 파라미터
-  const times = req.body.times; // 클라이언트에서 전달한 times 파라미터
-
-  // 여기에서 데이터를 MongoDB에 저장하는 등의 작업 수행
-  const collection = db.collection('blog');
-  
-  // 예시: MongoDB에 데이터 삽입
-  const result = await collection.insertOne({ id, times });
-
-  res.json({ success: true, insertedId: result.insertedId });
+// 루트 엔드포인트
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
 });
 
-// API 핸들러 구현 - 데이터 가져오기
-app.get('/api/data', async (req, res) => {
-  const id = req.query.id; // 클라이언트에서 전달한 id 파라미터
-  const times = req.query.times; // 클라이언트에서 전달한 times 파라미터
+// fetch data 엔드포인트
+app.get('/getData', async (req, res) => {
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-  // 여기에서 데이터를 MongoDB에서 가져오는 등의 작업 수행
-  const collection = db.collection('blog');
-  const result = await collection.findOne({ id, times });
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
 
-  // 예시: 가져온 데이터를 JSON 형태로 클라이언트에 응답
-  if (result) {
-    res.json(result);
-  } else {
-    res.json({ error: 'Data not found' });
+    const database = client.db(databaseName);
+    const collection = database.collection(collectionName);
+
+    const cursor = collection.find();
+    const result = await cursor.toArray();
+    console.log('Data retrieved from MongoDB:', result);
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    console.error('Error retrieving data from MongoDB:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  } finally {
+    await client.close();
+    console.log('Connection to MongoDB closed');
   }
 });
 
 
-  // Start the server
-  app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-  });
+
+
+// insertData 엔드포인트
+app.post('/insertData', async (req, res) => {
+  const data = req.body; // 클라이언트에서 보낸 데이터
+
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
+
+    const database = client.db(databaseName);
+    const collection = database.collection(collectionName);
+
+    const result = await collection.insertOne(data);
+    console.log('Data inserted into MongoDB:', result.insertedId);
+
+    res.json({ success: true, message: 'Data inserted successfully' });
+  } catch (error) {
+    console.error('Error inserting data into MongoDB:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  } finally {
+    await client.close();
+    console.log('Connection to MongoDB closed');
+  }
 });
 
-// Close the connection when the app is terminated
-process.on('SIGINT', () => {
-  client.close();
-  process.exit();
+// 서버 시작
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${port}`);
 });

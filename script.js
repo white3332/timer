@@ -293,29 +293,55 @@ function timeFormReboot() {
 // Function to fetch data
 async function fetchData() {
     const id = document.getElementById('in-id').value;
+    const data = { key: id };
   
-    // Assuming 'id' is a unique identifier in your collection
-    const result = await fetch(`/api/data?id=${id}`);
-    const data = await result.json();
+    try {
+      const response = await fetch('/getData', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
   
-    if (data) {
-      // Do something with the data, for example:
-      console.log('Found data:', data);
-    } else {
-      console.log('Data not found');
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+  
+      const result = await response.json();
+      console.log('Data inserted:', result);
+  
+      // 여기에서 받은 데이터(result)를 원하는 대로 활용할 수 있습니다.
+    } catch (error) {
+      console.error('Error inserting data:', error);
     }
   }
+  
+
+
+
 
 // Function to save data
 async function saveData() {
+    // 데이터 객체를 만듭니다. 이 데이터는 서버로 전송될 것입니다.
     const id = document.getElementById('in-id').value;
-  
-    const response = await fetch(`/api/saveData?id=${id}&times=${times}`, {
-      method: 'POST'
+    // id와 times 배열을 저장
+    const data = { key: id, times: times }; // times 데이터를 객체에 추가
+
+    // AJAX 요청을 보냅니다.
+    fetch('/insertData', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(result => {
+      console.log('Data inserted:', result);
+    })
+    .catch(error => {
+      console.error('Error inserting data:', error);
     });
-  
-    const result = await response.json();
-  
-    console.log('Data saved:', result);
   }
   
