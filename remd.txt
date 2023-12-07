@@ -2,6 +2,12 @@ npm install express
 npm install cors
 npm node server.js
 
+Apache의 경우, /var/log/apache2/error.log 파일을 확인
+Apache가 어디에서 설정 파일을 읽어오는지 확인할 수 있습니다.
+  apachectl -t -D DUMP_INCLUDES
+  
+  /etc/apache2/sites-available 추가적인 사이트 또는 가상 호스트 설정 파일
+              /sites-enabled 원본 파일이나 디렉토리의 내용에 접근
 
 내 웹페이지 접속
 mytimer-white3332.메인.한국
@@ -26,6 +32,29 @@ root 계정
 비번 white3332
 
 
-node server 하고
-mysql 데이터베이스 열고
-html 실행할것
+
+mysql데이터베이스 생성
+
+mysql -u root -p
+CREATE DATABASE times;
+USE times;
+
+CREATE TABLE times (
+  id INT PRIMARY KEY,
+  times JSON
+);
+ALTER TABLE times
+MODIFY id VARCHAR(500),
+MODIFY times VARCHAR(500);
+
+mysql
+비번 변경
+ALTER USER 'white3332'@'%' IDENTIFIED BY 'white3332';
+유저 생성
+CREATE USER 'white3332'@'%' IDENTIFIED BY 'white3332';
+권한 설정
+GRANT ALL PRIVILEGES ON *.* TO 'white3332'@'%';
+적용
+FLUSH PRIVILEGES;
+
+

@@ -2,6 +2,8 @@ let timer;
 var timeLeftSec = 60 // 초
 var countIndex = 1
 var timerRunning = false;
+// 오디오 객체 생성
+var audio123 = new Audio('alarm123.mp3');
 
 // 핵심 // 타이머를 중지하거나 이어서 실행함
 // (updateTimer, 10) <- 0.01 초에 1회 실행
@@ -23,6 +25,7 @@ function startStopTimer() {
 
 // 타이머 시분초 표시 1초에 1번 반복하는 함수
 function updateTimer() {
+    
     
     if (timeLeftSec > 0) {
         // 타이머 실행중일 때
@@ -46,7 +49,7 @@ function updateTimer() {
 // 타이머 시간 초기화 및 재시작(이어서시작 X)
 function restart() {
     // 시 분 초 세팅
-    const lastElement = accumulateTimes[accumulateTimes.length - 1]; // 수정 필요
+    const lastElement = accumulateTimes.length > 0 ? accumulateTimes[accumulateTimes.length - 1] : 0;
     const hours = Math.floor(lastElement / 3600);
     const minutes = Math.floor(lastElement / 60);
     const seconds = lastElement % 60;
@@ -70,7 +73,26 @@ function notificationAfterTimeDetection(displayTime) {
         openNotificationModal();
         countIndex ++;
     }
+    // 소리 알람
+    playAlarm();
 }
+
+
+
+// 소리 알람 기능
+function playAlarm() {
+    // 기존 오디오 중지
+    if (audio123) {
+        audio123.pause();
+        audio123.currentTime = 0;
+    }
+  
+    // 새로운 오디오 실행
+    audio123 = new Audio('alarm123.mp3');
+    audio123.play();
+  }
+ 
+
 
 // 모달을 열기
 function openEditModal() {
@@ -114,27 +136,27 @@ function openNotificationModal() {
 
     // 이전 시간을 입력
     const strTimeElement = document.getElementById('strTime');
-    if (accTimes[countIndex -1] !== undefined && accTimes[countIndex -1] !== null && (countIndex -1 ) >= 0 ) {
-        strTimeElement.innerText = accTimes[countIndex -1];
+    if (accTimes[countIndex -2] !== undefined && accTimes[countIndex -1] !== null && (countIndex -2 ) >= 0 ) {
+        strTimeElement.innerText = accTimes[countIndex -2];
     } else {
         // 값이 존재하지 않으면 '시작' 출력
-        strTimeElement.innerText = '시작';}
+        strTimeElement.innerText = '없음';}
 
     // 현재 시간을 입력
     const curTimeElement= document.getElementById('curTime');
-    if (accTimes[countIndex] !== undefined && accTimes[countIndex] !== null) {
-        curTimeElement.innerText = accTimes[countIndex];
+    if (accTimes[countIndex-1] !== undefined && accTimes[countIndex-1] !== null  && (countIndex -1 ) >= 0 )   {
+        curTimeElement.innerText = accTimes[countIndex-1];
     } else {
         // 값이 존재하지 않으면 '시작' 출력
-        curTimeElement.innerText = '끝';}
+        curTimeElement.innerText = '없음';}
 
     // 끝 시간을 입력
     const endTimeElement = document.getElementById('endTime');
-    if (accTimes[countIndex+1] !== undefined && accTimes[countIndex+1] !== null) {
-        endTimeElement.innerText = accTimes[countIndex+1];
+    if (accTimes[countIndex] !== undefined && accTimes[countIndex] !== null) {
+        endTimeElement.innerText = accTimes[countIndex];
     } else {
         // 값이 존재하지 않으면 '끝' 출력
-        endTimeElement.innerText = '끝';}
+        endTimeElement.innerText = '없음';}
 }
 
 
@@ -282,27 +304,26 @@ function timeFormReboot() {
         }
     }
 
-
-
 async function getTimes() {
     const inId = document.getElementById('in-id').value;
     if (!inId) {
         alert('아이디를 입력하지 않았습니다.');
     } else {
         try {
-            const response = await fetch(`http://localhost:3000/getTimes/${inId}`);
+            const response = await fetch(`http://192.168.146.100/phpfunc.php?id=${inId}`);
             const data = await response.json();
             console.log('Times:', data);
             times = data;
 
             // 여기서 data를 사용하여 원하는 작업을 수행할 수 있습니다.
-            
+
             // 모든 시간을 누적한 값 생성
             updateAccumulateTimes();
             // 시간을 표시할 요소와 체크박스 초기화
             timeFormReboot();
         } catch (error) {
             console.error('Error:', error);
+            alert(error)
         }
     }
 }
@@ -313,7 +334,7 @@ async function saveTimes() {
         alert('아이디를 입력하지 않았습니다.');
     } else {
         try {
-            const response = await fetch('http://localhost:3000/saveTimes', {
+            const response = await fetch('http://192.168.146.100/phpfunc.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -335,8 +356,10 @@ async function saveTimes() {
             }
         } catch (error) {
             console.error('Error:', error);
+            alert(error)
         }
     }
 }
+
 
 
