@@ -11,6 +11,7 @@ Apache가 어디에서 설정 파일을 읽어오는지 확인할 수 있습니�
 
 내 웹페이지 접속
 mytimer-white3332.메인.한국
+http://192.168.146.100/
 
 우분투
 curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
