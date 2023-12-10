@@ -72,9 +72,10 @@ function notificationAfterTimeDetection(displayTime) {
     if (elapseTime >= accumulateTimes[countIndex - 1]) {
         openNotificationModal();
         countIndex ++;
+        // 소리 알람
+        playAlarm();
     }
-    // 소리 알람
-    playAlarm();
+
 }
 
 
